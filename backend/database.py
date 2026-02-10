@@ -1,11 +1,17 @@
+import os
 import sqlite3
 
-DB_PATH = "data/pharma.db"
+# Get project root dynamically (works locally + on Streamlit Cloud)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "data", "pharma.db")
 
 def get_connection():
     return sqlite3.connect(DB_PATH, check_same_thread=False)
 
 def init_db():
+    # Ensure data folder exists
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
     conn = get_connection()
     cur = conn.cursor()
 
