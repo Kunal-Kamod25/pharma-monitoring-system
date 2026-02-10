@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-# Get project root dynamically (works locally + on Streamlit Cloud)
+# Make DB path cloud-safe
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "data", "pharma.db")
 
@@ -15,15 +15,17 @@ def init_db():
     conn = get_connection()
     cur = conn.cursor()
 
+    # Users table (password stored as BLOB)
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
-        password TEXT,
+        password BLOB,
         role TEXT
     )
     """)
 
+    # Sensor data table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS sensor_data (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,6 +37,7 @@ def init_db():
     )
     """)
 
+    # Alerts table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS alerts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
