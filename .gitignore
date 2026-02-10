@@ -1,0 +1,10 @@
+# Python virtual env
+venv/
+__pycache__/
+*.pyc
+
+# Database (never commit DB files)
+data/*.db
+
+# OS junk
+.DS_Store
